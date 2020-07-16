@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.tngdev.vnnews.ui.main.MainFragment;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Override
