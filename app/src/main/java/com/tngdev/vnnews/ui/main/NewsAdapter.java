@@ -19,6 +19,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
 
     private List<NewsItem> data = null;
 
+    private OnItemClickListener onItemClickListener;
+
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     @NonNull
     @Override
     public NewsVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,6 +41,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
     public void onBindViewHolder(@NonNull NewsVH holder, int position) {
         NewsItem item = data.get(position);
         if (item == null) return;
+
+        holder.binding.getRoot().setOnClickListener(v -> {
+            if (onItemClickListener != null)
+                onItemClickListener.onItemClick(position, getData().get(position));
+        });
 
         if (!TextUtils.isEmpty(item.getImage())) {
             holder.binding.tvNewsNoImgTitle.setVisibility(View.GONE);
@@ -70,5 +85,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    static interface OnItemClickListener {
+        void onItemClick(int pos, NewsItem item);
     }
 }

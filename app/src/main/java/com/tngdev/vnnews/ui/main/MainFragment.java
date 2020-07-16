@@ -25,6 +25,7 @@ import com.tngdev.vnnews.R;
 import com.tngdev.vnnews.databinding.MainFragmentBinding;
 import com.tngdev.vnnews.model.NewsItem;
 import com.tngdev.vnnews.network.ApiResource;
+import com.tngdev.vnnews.ui.detail.DetailNewsActivity;
 
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class MainFragment extends Fragment {
 
         newsAdapter = new NewsAdapter();
         mBinding.rvNews.setAdapter(newsAdapter);
+        newsAdapter.setOnItemClickListener((pos, item) -> DetailNewsActivity.start(requireActivity(), item.getLink()));
 
         mViewModel.getNews().observe(getViewLifecycleOwner(), new Observer<ApiResource<LiveData<List<NewsItem>>>>() {
             @Override

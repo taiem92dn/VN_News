@@ -23,6 +23,8 @@
             android:textAlignment="center"
             android:gravity="center"
             android:text="This is Text"
+            android:textColor="@android:color/black"
+            android:padding="@dimen/padding_medium"
             android:ellipsize="end"
             android:maxLines="3"
             android:layout_centerInParent="true"/>
