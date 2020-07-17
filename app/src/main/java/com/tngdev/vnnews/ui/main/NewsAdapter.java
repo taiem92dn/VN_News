@@ -49,6 +49,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
 
         if (!TextUtils.isEmpty(item.getImage())) {
             holder.binding.tvNewsNoImgTitle.setVisibility(View.GONE);
+            holder.binding.ivNews.setVisibility(View.VISIBLE);
             Glide.with(holder.itemView)
                     .load(item.getImage())
                     .into(holder.binding.ivNews);
@@ -57,7 +58,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
         }
         else {
             holder.binding.tvNewsNoImgTitle.setVisibility(View.VISIBLE);
-            holder.binding.ivNews.setVisibility(View.GONE);
+            holder.binding.ivNews.setVisibility(View.INVISIBLE);
 
             holder.binding.tvNewsNoImgTitle.setText(item.getTitle());
             holder.binding.tvNewsTitle.setText(Html.fromHtml(item.getDescription()));
