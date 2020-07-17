@@ -4,4 +4,5 @@
     <string name="wrong_data_message">Error wrong data</string>
     <string name="no_internet_message">No internet connection</string>
     <string name="unknown_error_message">Unknown Error</string>
+    <string name="dark_mode_menu_item">Dark Mode</string>
 </resources>

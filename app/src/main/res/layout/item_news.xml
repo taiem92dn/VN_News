@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/colorLigtGray">
+        android:background="?android:attr/colorBackground">
         <ImageView
             android:id="@+id/iv_news"
             android:layout_width="match_parent"
@@ -19,11 +19,10 @@
             android:id="@+id/tv_news_no_img_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
             android:textAlignment="center"
             android:gravity="center"
             android:text="This is Text"
-            android:textColor="@android:color/black"
+            android:textAppearance="?attr/textAppearanceHeadline5"
             android:padding="@dimen/padding_medium"
             android:ellipsize="end"
             android:maxLines="3"
