@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.tngdev.vnnews.databinding.ItemNewsBinding;
 import com.tngdev.vnnews.model.NewsItem;
 
@@ -20,6 +21,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
     private List<NewsItem> data = null;
 
     private OnItemClickListener onItemClickListener;
+
+    private RequestManager glideRequest;
+    ViewPreloadSizeProvider<NewsItem> preloadSizeProvider;
+
+    public NewsAdapter(RequestManager glideRequest, ViewPreloadSizeProvider<NewsItem> preloadSizeProvider) {
+        this.glideRequest = glideRequest;
+        this.preloadSizeProvider = preloadSizeProvider;
+    }
 
     public OnItemClickListener getOnItemClickListener() {
         return onItemClickListener;
@@ -50,9 +59,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
         if (!TextUtils.isEmpty(item.getImage())) {
             holder.binding.tvNewsNoImgTitle.setVisibility(View.GONE);
             holder.binding.ivNews.setVisibility(View.VISIBLE);
-            Glide.with(holder.itemView)
+            glideRequest
                     .load(item.getImage())
                     .into(holder.binding.ivNews);
+
+            preloadSizeProvider.setView(holder.binding.ivNews);
 
             holder.binding.tvNewsTitle.setText(item.getTitle());
         }

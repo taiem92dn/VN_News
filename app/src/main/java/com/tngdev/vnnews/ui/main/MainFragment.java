@@ -15,10 +15,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.ListPreloader;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.tngdev.vnnews.R;
@@ -27,6 +33,7 @@ import com.tngdev.vnnews.model.NewsItem;
 import com.tngdev.vnnews.network.ApiResource;
 import com.tngdev.vnnews.ui.detail.DetailNewsActivity;
 
+import java.util.Collections;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -41,6 +48,8 @@ public class MainFragment extends Fragment {
     private Snackbar noInternetSnackbar;
 
     private NewsAdapter newsAdapter;
+
+    private ViewPreloadSizeProvider<NewsItem> preloadSizeProvider;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -68,7 +77,8 @@ public class MainFragment extends Fragment {
         }
         mBinding.rvNews.addItemDecoration(itemDecoration);
 
-        newsAdapter = new NewsAdapter();
+        setupGlide();
+        newsAdapter = new NewsAdapter(Glide.with(this), preloadSizeProvider);
         mBinding.rvNews.setAdapter(newsAdapter);
         newsAdapter.setOnItemClickListener((pos, item) -> DetailNewsActivity.start(requireActivity(), item.getLink()));
 
@@ -104,6 +114,35 @@ public class MainFragment extends Fragment {
                 mViewModel.refreshData();
             }
         });
+    }
+
+    private void setupGlide() {
+        preloadSizeProvider = new ViewPreloadSizeProvider<>();
+        ListPreloader.PreloadModelProvider<NewsItem> preloadModelProvider = new ListPreloader.PreloadModelProvider<NewsItem>() {
+            @NonNull
+            @Override
+            public List<NewsItem> getPreloadItems(int position) {
+                NewsItem item = null;
+                if (newsAdapter.getItemCount() > 0) {
+                    item = newsAdapter.getData().get(position);
+                }
+                if (item == null || TextUtils.isEmpty(item.getImage())) {
+                    return Collections.emptyList();
+                }
+
+                return Collections.singletonList(item);
+            }
+
+            @NonNull
+            @Override
+            public RequestBuilder<?> getPreloadRequestBuilder(@NonNull NewsItem item) {
+                return Glide.with(MainFragment.this)
+                        .load(item.getImage());
+            }
+        };
+        RecyclerViewPreloader<NewsItem> preloader = new RecyclerViewPreloader<NewsItem>(this,
+                preloadModelProvider, preloadSizeProvider, 10);
+        mBinding.rvNews.addOnScrollListener(preloader);
     }
 
     private void showData(LiveData<List<NewsItem>> data) {

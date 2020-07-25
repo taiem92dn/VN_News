@@ -88,20 +88,20 @@ public class DetailNewsActivity extends AppCompatActivity {
         }
     }
 
-    private void injectCSS() {
-
-        String code = "javascript:(function() {" +
-                "var node = document.createElement('style');"+
-                "node.type = 'text/css';"+
-                " node.innerHTML = 'body, label,th,p,a, td, tr,li,ul,span,table,h1,h2,h3,h4,h5,h6,h7,div,small {"+
-                "     color: #deFFFFFF;"+
-                "background-color: #232323;"+
-                " } ';"+
-                " document.head.appendChild(node);})();";
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mBinding.wvNews.evaluateJavascript(code,null);
-        }
-
-    }
+//    private void injectCSS() {
+//
+//        String code = "javascript:(function() {" +
+//                "var node = document.createElement('style');"+
+//                "node.type = 'text/css';"+
+//                " node.innerHTML = 'body, label,th,p,a, td, tr,li,ul,span,table,h1,h2,h3,h4,h5,h6,h7,div,small {"+
+//                "     color: #deFFFFFF;"+
+//                "background-color: #232323;"+
+//                " } ';"+
+//                " document.head.appendChild(node);})();";
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            mBinding.wvNews.evaluateJavascript(code,null);
+//        }
+//
+//    }
 }
